@@ -1,0 +1,18 @@
+# Table of content
+# Learn more at https://jupyterbook.org/customize/toc.html
+#
+
+- file: md/intro
+
+- part: Classic models
+  chapters:
+  - file: md/singlelocus
+  - file: md/singlelocusselection
+
+- part: Modeling data with the coalescent
+  chapters:
+  - file: md/hudsonalgo
+
+- part: Miscellany
+  chapters:
+  - file: md/bibliography
