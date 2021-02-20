@@ -46,6 +46,16 @@ jobs:
         run: |
           python -m pip install --user --upgrade -r requirements.txt
 
+      - name: Run test suite
+        run: |
+          python -m pytest tests
+          # We want to run tests first,
+          # but jupyter book will error out
+          # b/c it'll find the .pytest_cache/README.md
+          # and md files in .foo directories are always
+          # built, even if not building non-TOC files.
+          rm -rf .pytest_cache
+
       - name: Build the book
         run: |
           make
