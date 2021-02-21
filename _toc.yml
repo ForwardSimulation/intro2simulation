@@ -11,6 +11,7 @@
 
 - part: Modeling data with the coalescent
   chapters:
+  - file: md/coalescent_intro
   - file: md/hudsonalgo
 
 - part: Miscellany
