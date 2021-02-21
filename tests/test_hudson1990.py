@@ -11,26 +11,23 @@ def test_update_R(seed, nsam):
     R = np.arange(nsam)
     i = nsam
     X = 2 * nsam
-    expected = {i: True for i in R}
+
+    coalesced = []
 
     while i > 1:
-        for r in R[:i]:
-            assert r in expected
         c0 = state.randint(0, i, 1)[0]
         c1 = state.randint(0, i, 1)[0]
 
         while c1 == c0:
             c1 = state.randint(0, i, 1)[0]
 
-        assert R[c0] in expected
-        assert R[c1] in expected
-
-        expected.pop(min(R[c0], R[c1]))
-        expected.pop(max(R[c0], R[c1]))
-        expected[X - i] = True
-        expected[max(R[c0], R[c1])] = True
+        coalesced.append(R[c0])
+        coalesced.append(R[c1])
 
         R[min(c0, c1)] = X - i
         R[max(c0, c1)] = R[i - 1]
 
         i -= 1
+    coalcounts = np.unique(coalesced, return_counts=True)
+    for i in range(2 * nsam - 2):  # Skip the root
+        assert coalcounts[1][i] == 1
