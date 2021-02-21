@@ -123,11 +123,6 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="#factors-of-two">
-   Factors of two
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="hudsonalgo.html">
    Hudson’s linear-time simulation algorithm.
   </a>
@@ -250,22 +245,15 @@
         </div>
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Introduction
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#factors-of-two">
    Factors of two
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h2 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#representing-trees">
-     Representing trees
-    </a>
-   </li>
-  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#representing-trees">
+   Representing trees
+  </a>
  </li>
 </ul>
 
@@ -291,9 +279,8 @@ Examples appropriate for graduate-level courses are:</p>
 <li><p>Nordborg’s chapter in <em>Handbook of Statistical Genetics</em>. <span id="id3">[<a class="reference internal" href="bibliography.html#id2"><span>Nor04</span></a>]</span></p></li>
 <li><p>Rosenberg and Nordborg’s review. <span id="id4">[<a class="reference internal" href="bibliography.html#id4"><span>RN02</span></a>]</span></p></li>
 </ul>
-</div>
 <div class="section" id="factors-of-two">
-<h1>Factors of two<a class="headerlink" href="#factors-of-two" title="Permalink to this headline">¶</a></h1>
+<h2>Factors of two<a class="headerlink" href="#factors-of-two" title="Permalink to this headline">¶</a></h2>
 <p>A constant source of confusion to people learning about coalescent models has to do with time scaling.
 As discussed in the references above, time is measured in continuous units with respect to the (effective) population size.
 Thus, we may say that an event occurred <span class="math notranslate nohighlight">\(\tau = \frac{g}{2N_e}\)</span> time units ago, where <span class="math notranslate nohighlight">\(g\)</span> is the number of generations.
@@ -302,6 +289,7 @@ Here, <span class="math notranslate nohighlight">\(\tau\)</span> is a measure of
 To the best of my ability, all time units presented here will be in units of <span class="math notranslate nohighlight">\(2N_e\)</span> generations.
 This scaling differs from how Hudson’s <code class="docutils literal notranslate"><span class="pre">ms</span></code> program (<span id="id5">[<a class="reference internal" href="bibliography.html#id11"><span>Hud02</span></a>]</span>), which itself differs from Kelleher <em>et al.</em>’s <code class="docutils literal notranslate"><span class="pre">msprime</span></code> (<span id="id6">[<a class="reference internal" href="bibliography.html#id6"><span>KEM16</span></a>]</span>).
 We will make note of differences in scaling as necessary.</p>
+</div>
 <div class="section" id="representing-trees">
 <h2>Representing trees<a class="headerlink" href="#representing-trees" title="Permalink to this headline">¶</a></h2>
 <p>The tree shown below was generated using <a class="reference external" href="https://msprime.readthedocs.io">msprime</a> (<span id="id7">[<a class="reference internal" href="bibliography.html#id6"><span>KEM16</span></a>]</span>,<span id="id8">[<a class="reference internal" href="bibliography.html#id3"><span>KL20</span></a>]</span>)

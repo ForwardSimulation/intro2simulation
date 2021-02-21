@@ -26,7 +26,7 @@ Examples appropriate for graduate-level courses are:
 * Nordborg's chapter in *Handbook of Statistical Genetics*. {cite}`Nordborg2004-xy`
 * Rosenberg and Nordborg's review. {cite}`Rosenberg2002-ac`
 
-# Factors of two
+## Factors of two
 
 A constant source of confusion to people learning about coalescent models has to do with time scaling.
 As discussed in the references above, time is measured in continuous units with respect to the (effective) population size.
