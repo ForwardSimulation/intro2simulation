@@ -35,7 +35,7 @@ Here, $\tau$ is a measure of time in units of $2N_e$ generations.
 
 Sadly, factors of two are casually ignored, omitted, or forgotten about entirely when explaining the meaning of analytical expressions or how various software tools work.
 To the best of my ability, all time units presented here will be in units of $2N_e$ generations.
-This scaling differs from how Hudson's `ms` program ({cite}`Hudson2002-oo`), which itself differs from Kelleher *et al.*'s `msprime` ({cite}`Kelleher2016-cb`).
+This scaling differs from how Hudson's `ms` program {cite}`Hudson2002-oo` treats time units, which itself differs from Kelleher *et al.*'s `msprime` {cite}`Kelleher2016-cb`.
 We will make note of differences in scaling as necessary.
 
 ## Representing trees
