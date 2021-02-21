@@ -40,9 +40,6 @@ We will make note of differences in scaling as necessary.
 
 ## Representing trees
 
-The tree shown below was generated using [msprime](https://msprime.readthedocs.io) ({cite}`Kelleher2016-cb`,{cite}`Kelleher2020-zf`)
-We will discuss this software in later chapters.
-
 This tree is a random sample from the Kingman coalescent.
 This tree shows the ancestral history of a present-day sample of $n = 5$ randomly-chosen samples.
 Each node on the tree (small black circles) are labelled with `id: (time, parent id)`.
@@ -51,10 +48,11 @@ The `id` is an *index* that uniquely identifies each node.
 This tree has the following properties:
 
 * Our present-day samples have `id` values from $[0, n)$.
-* Teach present-day node has a time of 0.
+* Each present-day node has a time of 0.
 * Time increases into the past.
-* Time is measured in units of $N_e$ generations.
-  Note: not $2N_e$!!!
+* Time is measured in units of $2N_e$ generations.
+  Note: the simulator used scales time in units of $N_e$ generations.
+  The values have been adjusted.
 * There are a total of $2n - 1$ nodes.
 * The root node has `id` 8.
   The parent `id` of this node has a value of -1, which we interpret as `NULL`.
@@ -62,20 +60,27 @@ This tree has the following properties:
 
 ```{code-cell}
 ---
-'tags': ['hide-input']
+'tags': ['remove-input']
 ---
 import msprime
 import pandas as pd
 from IPython.display import SVG
+from myst_nb import glue
 
 ts = msprime.simulate(5, random_seed=987632)
 t = ts.first()
 nodes = sorted([i for i in t.nodes()])
 df = pd.DataFrame({"parent": [t.parent(i) for i in nodes],
-                   "time": [ts.tables.nodes.time[i] for i in nodes]})
+                   "time": [ts.tables.nodes.time[i]/2. for i in nodes]})
 df.index.name = "node"
-node_labels = {i: f"{i}: ({ts.tables.nodes.time[i]:.2f}, {t.parent(i)})" for i in nodes}
-SVG(t.draw(format="svg",height=300, width=500, node_labels=node_labels))
+node_labels = {i: f"{i}: ({ts.tables.nodes.time[i]/2.:.2f}, {t.parent(i)})" for i in nodes}
+glue("example_tree", SVG(t.draw(format="svg",height=300, width=500, node_labels=node_labels)), display=False)
+```
+
+```{glue:figure} example_tree
+:name: 'coalescent_intro_tree'
+
+An example tree simulated under Kingman's coalescent using `msprime` {cite}`Kelleher2016-cb`.
 ```
 
 For reasons of computational efficiency, it is convenient to represent these tree structures as a collection of arrays.
@@ -83,9 +88,15 @@ These collections describe a tree in a table-like format:
 
 ```{code-cell}
 ---
-'tags': ['hide-input']
+'tags': ['remove-input']
 ---
-df
+glue("example_table", df, display=False)
+```
+
+```{glue:figure} example_table
+:name: 'coalescent_intro_table'
+
+Table representation of the tree shown in {numref}`coalescent_intro_tree`.
 ```
 
 For a given sample size, we need arrays of length $2n - 1$.
@@ -116,8 +127,17 @@ Applying it to node 1 gives:
 
 ```{code-cell}
 ---
-'tags': ['hide-input']
+'tags': ['remove-input']
 ---
 path_from_1 = path_to_root(1, df.parent.tolist())
 path_from_1
 ```
+
+### Linked lists
+
+This representation of a tree is a form of a *singly-linked* list.
+Each element of the tree refers to its parent, which is the next element in the list.
+Thus, we can enter the tree at any point and follow this list until we hit a `NULL` value.
+
+We can do quite a lot with this simple representation of a tree.
+In practice, current methods use multiply-linked lists to enable algorithms to efficiently traverse sub-trees.
