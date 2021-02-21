@@ -254,6 +254,13 @@
   <a class="reference internal nav-link" href="#representing-trees">
    Representing trees
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linked-lists">
+     Linked lists
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -292,8 +299,6 @@ We will make note of differences in scaling as necessary.</p>
 </div>
 <div class="section" id="representing-trees">
 <h2>Representing trees<a class="headerlink" href="#representing-trees" title="Permalink to this headline">¶</a></h2>
-<p>The tree shown below was generated using <a class="reference external" href="https://msprime.readthedocs.io">msprime</a> (<span id="id7">[<a class="reference internal" href="bibliography.html#id6"><span>KEM16</span></a>]</span>,<span id="id8">[<a class="reference internal" href="bibliography.html#id3"><span>KL20</span></a>]</span>)
-We will discuss this software in later chapters.</p>
 <p>This tree is a random sample from the Kingman coalescent.
 This tree shows the ancestral history of a present-day sample of <span class="math notranslate nohighlight">\(n = 5\)</span> randomly-chosen samples.
 Each node on the tree (small black circles) are labelled with <code class="docutils literal notranslate"><span class="pre">id:</span> <span class="pre">(time,</span> <span class="pre">parent</span> <span class="pre">id)</span></code>.
@@ -301,43 +306,32 @@ The <code class="docutils literal notranslate"><span class="pre">id</span></code
 <p>This tree has the following properties:</p>
 <ul class="simple">
 <li><p>Our present-day samples have <code class="docutils literal notranslate"><span class="pre">id</span></code> values from <span class="math notranslate nohighlight">\([0, n)\)</span>.</p></li>
-<li><p>Teach present-day node has a time of 0.</p></li>
+<li><p>Each present-day node has a time of 0.</p></li>
 <li><p>Time increases into the past.</p></li>
-<li><p>Time is measured in units of <span class="math notranslate nohighlight">\(N_e\)</span> generations.
-Note: not <span class="math notranslate nohighlight">\(2N_e\)</span>!!!</p></li>
+<li><p>Time is measured in units of <span class="math notranslate nohighlight">\(2N_e\)</span> generations.
+Note: the simulator used scales time in units of <span class="math notranslate nohighlight">\(N_e\)</span> generations.
+The values have been adjusted.</p></li>
 <li><p>There are a total of <span class="math notranslate nohighlight">\(2n - 1\)</span> nodes.</p></li>
 <li><p>The root node has <code class="docutils literal notranslate"><span class="pre">id</span></code> 8.
 The parent <code class="docutils literal notranslate"><span class="pre">id</span></code> of this node has a value of -1, which we interpret as <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.
 This <code class="docutils literal notranslate"><span class="pre">NULL</span></code> indicates that there is no parent, thus indicating that this is a root node.</p></li>
 </ul>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">msprime</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">SVG</span>
-
-<span class="n">ts</span> <span class="o">=</span> <span class="n">msprime</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="mi">987632</span><span class="p">)</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-<span class="n">nodes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">nodes</span><span class="p">()])</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;parent&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">parent</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">],</span>
-                   <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ts</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">]})</span>
-<span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;node&quot;</span>
-<span class="n">node_labels</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: (</span><span class="si">{</span><span class="n">ts</span><span class="o">.</span><span class="n">tables</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">parent</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">}</span>
-<span class="n">SVG</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;svg&quot;</span><span class="p">,</span><span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">node_labels</span><span class="o">=</span><span class="n">node_labels</span><span class="p">))</span>
-</pre></div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
 </div>
 </div>
+<div class="figure align-default" id="coalescent-intro-tree">
 <div class="cell_output docutils container">
 <img alt="../_images/coalescent_intro_1_0.svg" src="../_images/coalescent_intro_1_0.svg" /></div>
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">An example tree simulated under Kingman’s coalescent using <code class="docutils literal notranslate"><span class="pre">msprime</span></code> <span id="id7">[<a class="reference internal" href="bibliography.html#id6"><span>KEM16</span></a>]</span>.</span><a class="headerlink" href="#coalescent-intro-tree" title="Permalink to this image">¶</a></p>
 </div>
 <p>For reasons of computational efficiency, it is convenient to represent these tree structures as a collection of arrays.
 These collections describe a tree in a table-like format:</p>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span>
-</pre></div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
 </div>
 </div>
+<div class="figure align-default" id="coalescent-intro-table">
 <div class="cell_output docutils container">
 <div class="output text_html"><div>
 <style scoped>
@@ -395,26 +389,27 @@ These collections describe a tree in a table-like format:</p>
     <tr>
       <th>5</th>
       <td>8</td>
-      <td>0.197092</td>
+      <td>0.098546</td>
     </tr>
     <tr>
       <th>6</th>
       <td>7</td>
-      <td>0.620690</td>
+      <td>0.310345</td>
     </tr>
     <tr>
       <th>7</th>
       <td>8</td>
-      <td>0.887622</td>
+      <td>0.443811</td>
     </tr>
     <tr>
       <th>8</th>
       <td>-1</td>
-      <td>6.041521</td>
+      <td>3.020761</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">Table representation of the tree shown in <a class="reference internal" href="#coalescent-intro-tree"><span class="std std-numref">Fig. 1</span></a>.</span><a class="headerlink" href="#coalescent-intro-table" title="Permalink to this image">¶</a></p>
 </div>
 <p>For a given sample size, we need arrays of length <span class="math notranslate nohighlight">\(2n - 1\)</span>.
 We use the <code class="docutils literal notranslate"><span class="pre">id</span></code> of a node to index these arrays, allowing efficient lookup of a node’s <code class="docutils literal notranslate"><span class="pre">parent</span></code> or <code class="docutils literal notranslate"><span class="pre">time</span></code>.</p>
@@ -441,18 +436,20 @@ The <code class="docutils literal notranslate"><span class="pre">parent</span></
 </div>
 </div>
 <p>Applying it to node 1 gives:</p>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path_from_1</span> <span class="o">=</span> <span class="n">path_to_root</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
-<span class="n">path_from_1</span>
-</pre></div>
-</div>
-</div>
+<div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[6, 7, 8]
 </pre></div>
 </div>
 </div>
+</div>
+<div class="section" id="linked-lists">
+<h3>Linked lists<a class="headerlink" href="#linked-lists" title="Permalink to this headline">¶</a></h3>
+<p>This representation of a tree is a form of a <em>singly-linked</em> list.
+Each element of the tree refers to its parent, which is the next element in the list.
+Thus, we can enter the tree at any point and follow this list until we hit a <code class="docutils literal notranslate"><span class="pre">NULL</span></code> value.</p>
+<p>We can do quite a lot with this simple representation of a tree.
+In practice, current methods use multiply-linked lists to enable algorithms to efficiently traverse sub-trees.</p>
 </div>
 </div>
 </div>
